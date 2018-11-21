@@ -1,58 +1,183 @@
 " vim-plug
 call plug#begin('~/.vim/plugged')
 
+" window resizing
+Plug 'talek/obvious-resize'
+
+" Easy motion
+Plug 'easymotion/vim-easymotion'
+
 " Ctrl-P
 Plug 'ctrlpvim/ctrlp.vim'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+
+" Rainbow brackets
+"Plug 'luochen1990/rainbow'
 
 " lightline
 Plug 'itchyny/lightline.vim'
 
-" NERD TREE
-Plug 'scrooloose/nerdtree'
-
 " git
 Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-rooter'
 
 " prettier
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 
-" open tree automaitcally if directory is opened
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" comment out lines
+Plug 'tpope/vim-commentary'
 
+" NERD TREE
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-
-" javascript
+" web dev.
 Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'othree/html5.vim'
+Plug 'elzr/vim-json'
+Plug 'larsbs/vim-xmll'
+Plug 'JulesWang/css.vim'
+Plug 'jparise/vim-graphql'
+
+" linting
+Plug 'w0rp/ale'
+
+" Note Taking
+Plug 'vimwiki/vimwiki'
+
+" markdown
+Plug 'jamshedvesuna/vim-markdown-preview'
+let vim_markdown_preview_github=1
+
+" autocomplete
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Searching
+Plug 'vim-scripts/gitignore'
+Plug 'wokalski/autocomplete-flow'
+" For func argument completion
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
 
 " Themes
+Plug 'phanviet/vim-monokai-pro'
+Plug 'larsbs/vimterial_dark'
 Plug 'kaicataldo/material.vim'
+Plug 'lifepillar/vim-solarized8'
+Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
+" icons
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
+" autocomplete
+let g:deoplete#enable_at_startup = 1
+let g:neosnippet#enable_completed_snippet = 1
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" commenting out lines
+" not working - noremap <C-/> <leader>gc
+
+" window resizing
+noremap <silent> <C-Up> :<C-U>ObviousResizeUp<CR>
+noremap <silent> <C-Down> :<C-U>ObviousResizeDown<CR>
+noremap <silent> <C-Left> :<C-U>ObviousResizeLeft<CR>
+noremap <silent> <C-Right> :<C-U>ObviousResizeRight<CR>
+
+" easy motion
+nmap s <Plug>(easymotion-s2)
+
+" buffer management
+" allow the ability to switch buffers without saving
+set hidden
+" list buffers and press a number to switch
+"nnoremap <F5> :buffers<CR>:buffer<Space>
+
+" ctrl-p
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+nnoremap <F5> :CtrlPBuffer<CR>
+
+" rainbow brackets
+let g:rainbow_active=1
+
+" NERDTree
+" open tree automaitcally if directory is opened
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" reveal file in tree
+nmap ,n :NERDTreeFind<CR>
+
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
+
 " Enable full color support in terminals
 set termguicolors
-set guifont=Operator\ Mono\ Light
-set background=dark
-colorscheme material
-let g:material_terminal_italics = 1
-let g:lightline = { 'colorscheme': 'material_vim' }
+set guifont=Hack\ NF:h11:cANSI
 
-" when running at every change you may want to disable quickfix
-let g:prettier#quickfix_enabled = 0
+" note taking
+let g:vimwiki_list = [{ 'syntax': 'markdown', 'ext': '.md'}]
 
-" Running before saving async
-let g:prettier#autoformat = 0
+" Themes
+" gruvbox
+ " set background=dark
+ " let g:gruvbox_italic=1
+ " colorscheme gruvbox
+ " let g:lightline = { 'colorscheme': 'gruvbox' }
+ 
+" nord
+colorscheme nord 
+let g:nord_italic = 1
+let g:nord_underline = 1
+"let g:nord_italic_comments = 1
+"let g:nord_uniform_status_lines = 1
+let g:nord_comment_brightness = 4
+"let g:nord_uniform_diff_background = 1
+let g:nord_cursor_line_number_background = 1
+let g:lightline = { 'colorscheme': 'nord' }
+
+"colorscheme vimterial_dark
+"colorscheme material
+"colorscheme monokai_pro
+"colorscheme solarized8
+"let g:material_terminal_italics = 1
+
+" Prettier Config
+let g:prettier#config#single_quote = 'false'
+let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#config#jsx_bracket_same_line = 'false'
+let g:prettier#config#arrow_parens = 'avoid'
+let g:prettier#config#trailing_comma = 'all'
+"let g:prettier#config#parser = 'flow'
+"let g:prettier#config#config_precedence = 'prefer-file'
+"let g:prettier#config#prose_wrap = 'preserve'
+"Running before saving async
+"let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 
-set number     " Show line numbers in the gutter
-set expandtab  " Insert spaces when TAB is pressed
-set tabstop=2  " Render TABs using this many spaces
-set ignorecase " Make searching case insensitive
-set smartcase  " ... unless the query has capital letters
+set number     	" Show line numbers in the gutter
+set ignorecase 	" Make searching case insensitive
+set smartcase  	" ... unless the query has capital letters
+set rnu        	" relative line numbers
+set nowrap	" Disable text wrap	
+set splitright	" Split new vertical windows to the right
+set splitbelow 	" Split new horizontal windows to the bottom
+
+autocmd FileType javascript set expandtab|set shiftwidth=2|set tabstop=2
+autocmd FileType java set noexpandtab|set shiftwidth=4|set tabstop=4
 
 " Use <C-L> to clear the highlighting of :set hlsearch
 " Use <C-L> to clear the highlighting of :set hlsearch.
@@ -72,3 +197,10 @@ endfunc
 
 " Toggle between normal and relative numbering.
 nnoremap <leader>r :call NumberToggle()<cr>
+
+" windows only
+if has('win32') || has('win64') 
+  set clipboard=unnamedplus
+  autocmd VimEnter * GuiFont! Hack\ NF:h11
+endif
+
