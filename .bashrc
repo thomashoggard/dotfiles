@@ -177,3 +177,4 @@ source ${HOME}/nvim-aliases.sh
 source /usr/share/nvm/init-nvm.sh 
 export VIMCONFIG=${HOME}/.config/nvim
 export VIMDATA=${HOME}/.local/share/nvim
+source ${HOME}/onmodify.sh
