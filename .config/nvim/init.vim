@@ -45,25 +45,24 @@ Plug 'w0rp/ale'
 " Note Taking
 Plug 'vimwiki/vimwiki'
 
-" markdown
-Plug 'jamshedvesuna/vim-markdown-preview'
-let vim_markdown_preview_github=1
-
 " autocomplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+if has('win32') || has('win64') 
+  Plug 'lifepillar/vim-mucomplete'
+  set completeopt+=noinsert
+  set shortmess+=c
+  set belloff+=ctrlg
+elseif
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " For func argument completion
+  Plug 'Shougo/neosnippet'
+  Plug 'Shougo/neosnippet-snippets'
+endif
 
 " Searching
 Plug 'vim-scripts/gitignore'
 Plug 'wokalski/autocomplete-flow'
-" For func argument completion
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
 
 " Themes
-Plug 'phanviet/vim-monokai-pro'
-Plug 'larsbs/vimterial_dark'
-Plug 'kaicataldo/material.vim'
-Plug 'lifepillar/vim-solarized8'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 " icons
@@ -71,11 +70,6 @@ Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
-" autocomplete
-let g:deoplete#enable_at_startup = 1
-let g:neosnippet#enable_completed_snippet = 1
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " commenting out lines
 " not working - noremap <C-/> <leader>gc
@@ -100,12 +94,9 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standar
 nnoremap <F5> :CtrlPBuffer<CR>
 
 " rainbow brackets
-let g:rainbow_active=1
+" let g:rainbow_active=1
 
 " NERDTree
-" open tree automaitcally if directory is opened
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 " reveal file in tree
 nmap ,n :NERDTreeFind<CR>
 
@@ -126,34 +117,44 @@ let g:NERDTreeIndicatorMapCustom = {
 
 " Enable full color support in terminals
 set termguicolors
-set guifont=Hack\ NF:h11:cANSI
+
+" windows only
+if has('win32') || has('win64') 
+  set clipboard=unnamedplus
+  autocmd VimEnter * GuiFont! Hack\ NF:h11
+  let g:python3_host_prog = 'C:\Users\803465046\AppData\Local\Programs\Python\Python37-32\python.exe'
+  
+  " autocomplete
+  let g:mucomplete#enable_auto_at_startup = 1
+elseif
+" autocomplete
+  let g:deoplete#enable_at_startup = 1
+  let g:neosnippet#enable_completed_snippet = 1
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+endif
+
+if (has('unix')) 
+  set guifont=Hack\ NF:h11:cANSI
+endif
 
 " note taking
 let g:vimwiki_list = [{ 'syntax': 'markdown', 'ext': '.md'}]
 
 " Themes
 " gruvbox
- " set background=dark
- " let g:gruvbox_italic=1
- " colorscheme gruvbox
- " let g:lightline = { 'colorscheme': 'gruvbox' }
- 
+"set background=dark
+"let g:gruvbox_italic=1
+"colorscheme gruvbox
+"let g:lightline = { 'colorscheme': 'gruvbox' }
+
 " nord
-colorscheme nord 
+colorscheme nord
 let g:nord_italic = 1
 let g:nord_underline = 1
-"let g:nord_italic_comments = 1
-"let g:nord_uniform_status_lines = 1
 let g:nord_comment_brightness = 4
-"let g:nord_uniform_diff_background = 1
 let g:nord_cursor_line_number_background = 1
 let g:lightline = { 'colorscheme': 'nord' }
-
-"colorscheme vimterial_dark
-"colorscheme material
-"colorscheme monokai_pro
-"colorscheme solarized8
-"let g:material_terminal_italics = 1
 
 " Prettier Config
 let g:prettier#config#single_quote = 'false'
@@ -176,7 +177,7 @@ set nowrap	" Disable text wrap
 set splitright	" Split new vertical windows to the right
 set splitbelow 	" Split new horizontal windows to the bottom
 
-autocmd FileType javascript set expandtab|set shiftwidth=2|set tabstop=2
+set shiftwidth=2 tabstop=2 expandtab 
 autocmd FileType java set noexpandtab|set shiftwidth=4|set tabstop=4
 
 " Use <C-L> to clear the highlighting of :set hlsearch
@@ -195,12 +196,15 @@ function! NumberToggle()
   endif
 endfunc
 
+" searching
+set grepprg=rg\ --vimgrep\ --smart-case\ $*
+set grepformat=%f:%l:%c:%m
+nnoremap <silent> [f :cprevious<CR>
+nnoremap <silent> ]f :cnext<CR>
+
 " Toggle between normal and relative numbering.
 nnoremap <leader>r :call NumberToggle()<cr>
 
-" windows only
-if has('win32') || has('win64') 
-  set clipboard=unnamedplus
-  autocmd VimEnter * GuiFont! Hack\ NF:h11
-endif
-
+" Set window title to working directory
+set title
+set titlestring=%{getcwd()}
