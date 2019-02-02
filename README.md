@@ -42,6 +42,8 @@ A collection of scripts and configurations that I use on a day-to-day basis.
   - vlc-pause-click-plugin
 - wine
 - wireshark
+- Grub Customizer
+- Notable
 
 ### Fonts
 - nerd-fonts-complete (v2.0.0-5 from AUR)
