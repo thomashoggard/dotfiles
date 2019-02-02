@@ -23,9 +23,9 @@ A collection of scripts and configurations that I use on a day-to-day basis.
 - LibraOffice (is there a better alternative?)
 - Meld (File comparision tool)
 - neofetch 
-- nerd-fonts-complete (v2.0.0-5 from AUR)
 - nvm (node version manager)
-- Orcal VM VirtualBox (virtualbox)
+- Oracle VM VirtualBox (virtualbox)
+  - virtualbox-guest-iso
 - powertop
 - private-internet-access-vpn
 - python
@@ -36,7 +36,17 @@ A collection of scripts and configurations that I use on a day-to-day basis.
 - solaar (logitech unifying receiver manager)
 - spotify
 - steam
-- timeshift
+- timeshifte
+- veracrypt
+- vlc
+  - vlc-pause-click-plugin
+- wine
+- wireshark
+
+### Fonts
+- nerd-fonts-complete (v2.0.0-5 from AUR)
+- ttf-font-awesome-4
+- System San Francisco Display
 
 ### i3wm
 
@@ -44,11 +54,12 @@ A collection of scripts and configurations that I use on a day-to-day basis.
 - i3-gaps
 - i3lock
 - i3status
+- i3-dmenu-desktop
 - playerctl
 - pulseaudio-ctl
 - pulseaudio-bluetooth
 - pulseaudio-zeroconf
-
+- polkit-gnome-authentication-agent-1???
 
 ## Wanted APps
 - Screenshot tool ike GNOME Screenshots 
